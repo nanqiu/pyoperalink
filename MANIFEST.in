@@ -1,0 +1,6 @@
+include AUTHORS
+include Changelog
+include LICENSE
+include MANIFEST.in
+include README.rst
+recursive-include pyoperalink *.py
