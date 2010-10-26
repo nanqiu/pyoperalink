@@ -25,18 +25,18 @@ Installation
 You can install ``pyoperalink`` either via the Python Package Index (PyPI)
 or from source.
 
-To install using ``pip``,::
+To install using ``pip``:
 
     $ pip install pyoperalink
 
 
-To install using ``easy_install``,::
+To install using ``easy_install``:
 
     $ easy_install pyoperalink
 
 
 If you have downloaded a source you can install it
-by doing the following,::
+by doing the following,:
 
     $ python setup.py build
     # python setup.py install # as root
