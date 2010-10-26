@@ -83,88 +83,92 @@ List of accepted parameters for every datatype can be found in
 documentation for corresponding class.
 
 Methods of LinkClient:
-    create_bookmark(item_id, params)
-    move_bookmark(item_id, relative_position, reference_item=None)
-    delete_bookmark(item_id)
-    trash_bookmark(item_id)
-    update_bookmark(item_id, params)
+ - create_bookmark(item_id, params)
+ - move_bookmark(item_id, relative_position, reference_item=None)
+ - delete_bookmark(item_id)
+ - trash_bookmark(item_id)
+ - update_bookmark(item_id, params)
 
-    create_note(item_id, params)
-    move_note(item_id, , relative_position, reference_item=None)
-    delete_note(item_id)
-    trash_note(item_id)
-    update_note(item_id, params)
+ - create_note(item_id, params)
+ - move_note(item_id, , relative_position, reference_item=None)
+ - delete_note(item_id)
+ - trash_note(item_id)
+ - update_note(item_id, params)
 
-    create_speeddial(item_id, params)
-    delete_speeddial(item_id)
-    update_speeddial(item_id, params)
+ - create_speeddial(item_id, params)
+ - delete_speeddial(item_id)
+ - update_speeddial(item_id, params)
 
 Except from the delete method, all calls will return server response
 as a dictionary of the item's fields and their values.
 
-
-
+=============
 Authorization
 =============
-To get access to the user's data OAuth 1.0a protocol based authization method is
-preformed. To make it work for your application, it must be registered at
-https://auth.opera.com/service/oauth/applications/ where you are going to receive
-consumer key and consumer secret. It can be registered either as a Desktop or a
-Web application. If you register the latter, then you must specify a callback URL
-- the adress where the user and the generated token will be returned
-  back into your web application, after autorization is complete.
+
+ To get access to the user's data OAuth
+1.0a protocol based authization method is preformed. To make it work
+for your application, it must be registered at
+https://auth.opera.com/service/oauth/applications/ where you are going
+to receive consumer key and consumer secret. It can be registered
+either as a Desktop or a Web application. If you register the latter,
+then you must specify a callback URL. That is the adress where the
+user and the generated token will be returnedback into your web
+application, after autorization is complete.
 
 
-
+=========
 Examples 
-========
+=========
 
 >>> import pyoperalink
 
-AUTHORIZATION
+Authorization
+_____________
 
 Typical workflow to access Opera Link data of a new user:
 
-    # Create a new OAuth handler with consumer key and consumer secret,
-    # received when registering the application on. 
-    # Pass the callback URL if you're making a web application
-    # http://auth.opera.com/service/oauth/applications/
+# Create a new OAuth handler with consumer key and consumer secret,
+# received when registering the application on. 
+# Pass the callback URL if you're making a web application
+# http://auth.opera.com/service/oauth/applications/
     >>> from pyoperalink.auth import OAuth
     >>> auth = OAuth('consumer_key',
     >>> ....'consumer_secret')
 
-    # Get address to the authorization website where user can grant access to the
-    # application, pass callback URL if any. 
+# Get address to the authorization website where user can grant access to the
+# application, pass callback URL if any. 
     >>> auth.get_authorization_url()
     'https://auth.opera.com/service/oauth/authorize?callback=oob&oauth_token=ATfOL57RDJplURAtmC2VjQcphgsphCnX'
 
-    # Now your application should redirect user on the address above
+# Now your application should redirect user on the address above
 
-    # After the user has granted access to the application, complete
-    # the autorization, using the verifer code you received.
-    # Keep this token, using whatever means you want. You need it
-    # every time you want to access the service. 
+# After the user has granted access to the application, complete
+# the autorization, using the verifer code you received.
+# Keep this token, using whatever means you want. You need it
+# every time you want to access the service. 
     >>> token = auth.get_access_token(verifier)
 
 
-    # To access Opera Link data of a user who has already generated
-    # access token:
+# To access Opera Link data of a user who has already generated
+# access token:
     >>> auth = OAuth('consumer_key',
     >>> ....'consumer_secret')
     >>> auth.set_access_token("token", "token_secret")
 
-    # Now you can use Opera Link Public API
+# Now you can use Opera Link Public API
 
     >>> from pyoperalink.client import LinkClient
     >>> client = LinkClient(auth)
 
-ACCESSING THE USER DATA
+Accessing the user data
+_______________________
 
 Examples for bookmarks:
 
     >>> from pyoperalink import datatypes
 
-    # get list of all bookmark elements from the server
+# get list of all bookmark elements from the server
     >>> bookmarks = client.get_bookmarks()
     >>> len(bookmarks)
     6
@@ -173,55 +177,56 @@ Examples for bookmarks:
     >>> bookmarks[0].uri
     'http://link.opera.com/'
 
-    # move some element to a trash folder
+# move some element to a trash folder
     >>> bookmarks[-1].trash()
 
-    # check if an element in the list is a folder
+# check if an element in the list is a folder
     >>> bookmarks[2].is_folder()
     True
-    # Fetch the items contained in the folder
+# Fetch the items contained in the folder
     >>> children = bookmarks[2].children
     >>> len(children)
     4
 
-    # Directly fetch the items contained in a specific folder
+# Directly fetch the items contained in a specific folder
     >>> children = client.get_bokmarks("4E1601F6F30511DB9CA51FD19A7AAECA")
     >>> len(children)
     4
 
-    # Move one of the bookmarks into a folder
+# Move one of the bookmarks into a folder
     >>> bookmarks[1].move(bookmarks[2], "into")
-    # Or using the client shortcut method
+# Or using the client shortcut method
     >>> client.move_into(bookmarks[1], bookmarks[2])
 
-    # Greate a new bookmark and add it to the storage
+# Greate a new bookmark and add it to the storage
     >>> sample_bookmark = datatypes.Bookmark(title='sample_title', uri='http://www.opera.com')
     >>> client.add(sample_bookmark)
 
-    # Or add it straight into an existing folder:
+# Or add it straight into an existing folder:
     >>> sample_bookmark = datatypes.Bookmark(title='sample_title', uri='http://www.opera.com')
     >>> client.add_to_folder(sample_bookmark, bookmarks[2])
 
-    # Modify bookmark properties
+# Modify bookmark properties
     >>> bookmarks[2].title = 'New folder title'
-    # And save the changes to the server
+# And save the changes to the server
     >>> bookmarks[2].update()
 
 
 Examples for notes:
-    # get list of notes from the server
+
+# get list of notes from the server
     >>> notes = client.get_notes()
     >>> len(notes)
     6
 
-    # check if element is a folder
+# check if element is a folder
     >>> notes[2].is_folder()
     True
     >>> children = notes[2].children
     >>> len(children)
     1
 
-    # move one of the notes to another folder
+# move one of the notes to another folder
     >>> client.move_into(notes[3], notes[2])
     >>> len(client.get_notes(notes[2].id))
     2
@@ -232,18 +237,19 @@ Examples for notes:
     3
 
 Examples for speed dials:
-    # get list of speed dials from the server
+
+# get list of speed dials from the server
     >>> dials = client.get_speeddials()
     >>> len(dials)
     8
 
-    # delete one of the speed dials
+# delete one of the speed dials
     >>> dials[1].delete()
     >>> dials = client.get_speeddials()
     >>> len(dials)
     7
 
-    # insert new dial at position 1
+# insert new dial at position 1
     >>> sample_dial = datatypes.SpeedDial(id=1, title='sample note content', uri='http://example.com')
     >>> client.add(sample_dial)
     >>> sample_dial.uri
@@ -251,7 +257,7 @@ Examples for speed dials:
     >>> sample_dial.position
     1
 
-
+=======
 License
 =======
 
