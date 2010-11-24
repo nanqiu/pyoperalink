@@ -50,7 +50,7 @@ class LinkEntry(object):
 
     def _set_fields(self, params):
         """
-        Set the object's fields using passed params dictionary
+        Set the object"s fields using passed params dictionary
         """
         for key in params:
             if key in self.fields:
@@ -66,12 +66,12 @@ class LinkEntry(object):
     def update(self):
         """
         Sends the item to the Opera Link server.
-        If there are any concurrent changes on the server, it'll update too
+        If there are any concurrent changes on the server, it"ll update too
         """
         method = getattr(self._conn, "update_%s" % self.datatype)
         resp = method(self.id, self._to_python())
 
-        self._set_fields(resp[0]['properties'])
+        self._set_fields(resp[0]["properties"])
 
     def _add(self, parent_id=None):
         """
@@ -84,8 +84,8 @@ class LinkEntry(object):
         params["item_type"] = self.item_type
         resp = method(parent_id, params)
 
-        self.id = resp[0]['id']
-        self._set_fields(resp[0]['properties'])
+        self.id = resp[0]["id"]
+        self._set_fields(resp[0]["properties"])
 
     def __str__(self):
         fields = "\n".join("%s:%s" % (field, value.encode("utf-8"))
@@ -117,9 +117,9 @@ class TreeEntry(LinkEntry):
         if reference_item:
             resp = method(self.id, relative_position, reference_item.id)
         else:
-            resp = method(self.id, {'reference_item': ""})
+            resp = method(self.id, {"reference_item": ""})
 
-        self._set_fields(resp[0]['properties'])
+        self._set_fields(resp[0]["properties"])
 
     def get_trash_folder(self):
         root = self.get_root_folder()
@@ -129,16 +129,16 @@ class TreeEntry(LinkEntry):
 
 class BookmarkEntry(TreeEntry):
     """ Common class for elements that can be inside Opera bookmarks """
-    datatype = 'bookmark'
+    datatype = "bookmark"
 
     def __init__(self, *args, **kwargs):
         super(BookmarkEntry, self).__init__(*args, **kwargs)
 
 
 class BookmarkFolder(BookmarkEntry):
-    fields = ('title', 'nickname', 'description',
-              'type', 'target')
-    item_type = 'bookmark_folder'
+    fields = ("title", "nickname", "description",
+              "type", "target")
+    item_type = "bookmark_folder"
 
     @property
     def is_folder(self):
@@ -153,13 +153,13 @@ class BookmarkFolder(BookmarkEntry):
 
 class BookmarkSeparator(BookmarkEntry):
     fields = ()
-    item_type = 'bookmark_separator'
+    item_type = "bookmark_separator"
 
 
 class Bookmark(BookmarkEntry):
-    fields = ('title', 'nickname', 'description', 'uri',
-              'icon', 'created', 'visited');
-    item_type = 'bookmark'
+    fields = ("title", "nickname", "description", "uri",
+              "icon", "created", "visited");
+    item_type = "bookmark"
 
     def __init__(self, *args, **kwargs):
         super(Bookmark, self).__init__(*args, **kwargs)
@@ -178,18 +178,18 @@ class Bookmark(BookmarkEntry):
 
     def _to_python(self):
         d = super(Bookmark, self)._to_python()
-        d['created'] = datetime_to_rfc3339(self.created)
-        d['visited'] = datetime_to_rfc3339(self.visited)
+        d["created"] = datetime_to_rfc3339(self.created)
+        d["visited"] = datetime_to_rfc3339(self.visited)
         return d
 
 
 class NoteEntry(TreeEntry):
-    datatype = 'note'
+    datatype = "note"
 
 
 class NoteFolder(NoteEntry):
-    fields = ('title', 'type', 'target')
-    item_type = 'note_folder'
+    fields = ("title", "type", "target")
+    item_type = "note_folder"
 
     @property
     def is_folder(self):
@@ -208,8 +208,8 @@ class NoteSeparator(NoteEntry):
 
 
 class Note(NoteEntry):
-    item_type = 'note'
-    fields = ('content', 'created', 'uri');
+    item_type = "note"
+    fields = ("content", "created", "uri");
 
     def __init__(self, *args, **kwargs):
         super(Note, self).__init__(*args, **kwargs)
@@ -217,7 +217,7 @@ class Note(NoteEntry):
 
     def _to_python(self):
         d = super(Note, self)._to_python()
-        d['created'] = datetime_to_rfc3339(self.created)
+        d["created"] = datetime_to_rfc3339(self.created)
         return d
 
     def _add(self, item_id=None):
@@ -230,9 +230,9 @@ class Note(NoteEntry):
 
 
 class SpeedDial(LinkEntry):
-    fields = ('title', 'uri', 'icon', 'thumbnail')
-    datatype = 'speeddial'
-    item_type = 'speeddial'
+    fields = ("title", "uri", "icon", "thumbnail")
+    datatype = "speeddial"
+    item_type = "speeddial"
 
     def __init__(self, *args, **kwargs):
         super(SpeedDial, self).__init__(*args, **kwargs)
@@ -244,11 +244,11 @@ class SpeedDial(LinkEntry):
         super(SpeedDial,self)._add(self.position)
 
 registry = {
-        'bookmark': Bookmark,
-        'bookmark_folder': BookmarkFolder,
-        'bookmark_separator': BookmarkSeparator,
-        'note': Note,
-        'note_folder': NoteFolder,
-        'note_separator': NoteSeparator,
-        'speeddial': SpeedDial,
+        "bookmark": Bookmark,
+        "bookmark_folder": BookmarkFolder,
+        "bookmark_separator": BookmarkSeparator,
+        "note": Note,
+        "note_folder": NoteFolder,
+        "note_separator": NoteSeparator,
+        "speeddial": SpeedDial,
 }

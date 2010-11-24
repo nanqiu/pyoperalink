@@ -14,7 +14,7 @@ class OAuth(object):
 
     oauth_url = "https://auth.opera.com/service/oauth/"
 
-    def __init__(self, consumer_key, consumer_secret, callback='oob',
+    def __init__(self, consumer_key, consumer_secret, callback="oob",
             oauth_url=None):
         self._consumer = oauth.Consumer(consumer_key, consumer_secret)
         self.request_token = None
@@ -66,12 +66,12 @@ class OAuth(object):
 
     @property
     def request_token_url(self):
-        return self.oauth_url + 'request_token'
+        return self.oauth_url + "request_token"
 
     @property
     def access_token_url(self):
-        return self.oauth_url + 'access_token'
+        return self.oauth_url + "access_token"
 
     @property
     def authorize_url(self):
-        return self.oauth_url + 'authorize'
+        return self.oauth_url + "authorize"

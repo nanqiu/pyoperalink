@@ -83,8 +83,8 @@ class DatatypeMaster(type):
     """
 
     update_docstring = """
-    Saves local changes to the %s item's fields to the server.
-    Returns a dict with all the item's fields and values, as saved on
+    Saves local changes to the %s item"s fields to the server.
+    Returns a dict with all the item"s fields and values, as saved on
     the server.
     """
 
@@ -96,7 +96,7 @@ class DatatypeMaster(type):
     appended at the end of the folder, corresponding to that ID.
 
     Created object is of type deriving from %(class)s depending on
-    'item_type' parameter passed.
+    "item_type" parameter passed.
     """
 
     delete_docstring = """
@@ -125,13 +125,13 @@ class DatatypeMaster(type):
         # Add methods specific for tree structures
         for datatype, element_class in TREE_STRUCTURED_DATATYPES:
 
-            trash_method = cls.gen_delete_datatype(datatype, 'trash')
+            trash_method = cls.gen_delete_datatype(datatype, "trash")
             trash_method.__doc__ = cls.trash_docstring % datatype
-            attrs["%s_%s" % ('trash', datatype)] = trash_method
+            attrs["%s_%s" % ("trash", datatype)] = trash_method
 
             move_method = cls.gen_move_datatype(datatype)
             move_method.__doc__ = cls.move_docstring % datatype
-            attrs["%s_%s" % ('move', datatype)] = move_method
+            attrs["%s_%s" % ("move", datatype)] = move_method
 
         # Add methods common for all datatype elements
         for datatype, element_class in (TREE_STRUCTURED_DATATYPES + 
@@ -148,19 +148,19 @@ class DatatypeMaster(type):
             attrs["get_%s" % datatype] = method
 
             # method to delete an item
-            method = cls.gen_delete_datatype(datatype, 'delete')
+            method = cls.gen_delete_datatype(datatype, "delete")
             method.__doc__ = cls.delete_docstring % datatype
             attrs["delete_%s" % datatype] = method
 
             # method to create an item
-            method = cls.gen_change_datatype(datatype, 'create')
+            method = cls.gen_change_datatype(datatype, "create")
             method.__doc__ = cls.create_docstring % {
                                         "datatype": datatype,
                                         "class": element_class}
             attrs["create_%s" % datatype] = method
 
             # method to update an item
-            method = cls.gen_change_datatype(datatype, 'update')
+            method = cls.gen_change_datatype(datatype, "update")
             method.__doc__ = cls.update_docstring % datatype
             attrs["update_%s" % datatype] = method
 
@@ -213,9 +213,9 @@ class DatatypeMaster(type):
 
             if reference_item is None:
                 reference_item = ""
-            return instance._change_resource(datatype, 'move',
-                    {'reference_item': reference_item,
-                     'relative_position': relative_position},
+            return instance._change_resource(datatype, "move",
+                    {"reference_item": reference_item,
+                     "relative_position": relative_position},
                     item_id)
         return datatype_move
 
@@ -398,16 +398,16 @@ class LinkClient(object):
        Relocates the item in the tree, appendig it at the end of destination.
        destination must be a folder item. If None, it imples the root folder.
        """
-       element.move(destination, 'into')
+       element.move(destination, "into")
 
     def move_before(self, element, reference_item):
        """
        Relocates the item in the tree, placing it after reference_item.
        """
-       element.move(reference_item, 'before')
+       element.move(reference_item, "before")
 
     def move_after(self, element, reference_item):
         """
         Relocates the item in the tree, placing it after reference_item.
         """
-        element.move(reference_item, 'after')
+        element.move(reference_item, "after")
