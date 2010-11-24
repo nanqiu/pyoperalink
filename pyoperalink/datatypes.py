@@ -263,5 +263,5 @@ registry = {
     "note_separator": NoteSeparator,
     "speeddial": SpeedDial,
     "search_engine": SearchEngine,
-    "urlfitler": UrlFilter,
+    "urlfilter": UrlFilter,
 }
