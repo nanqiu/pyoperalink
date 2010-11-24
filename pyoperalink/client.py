@@ -13,7 +13,8 @@ except ImportError:
 
 TREE_STRUCTURED_DATATYPES = [("bookmark", "BookmarkFolderEntry"),
                              ("note", "NoteFolderEntry")]
-LIST_STRUCTURED_DATATYPES = [("speeddial", "SpeedDial")]
+LIST_STRUCTURED_DATATYPES = [("speeddial", "SpeedDial"),
+                             ("search_engine", "SearchEngine")]
 
 # Opera Link Server address
 OPERA_LINK_URL = "https://link.api.opera.com/rest"

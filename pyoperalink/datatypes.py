@@ -243,12 +243,20 @@ class SpeedDial(LinkEntry):
     def _add(self):
         super(SpeedDial,self)._add(self.position)
 
+class SearchEngine(LinkEntry):
+    fields = ("title", "uri", "encoding", "is_post",
+              "key", "post_query", "icon")
+    datatype = "search_engine"
+    item_type = "search_engine"
+
+
 registry = {
-        "bookmark": Bookmark,
-        "bookmark_folder": BookmarkFolder,
-        "bookmark_separator": BookmarkSeparator,
-        "note": Note,
-        "note_folder": NoteFolder,
-        "note_separator": NoteSeparator,
-        "speeddial": SpeedDial,
+    "bookmark": Bookmark,
+    "bookmark_folder": BookmarkFolder,
+    "bookmark_separator": BookmarkSeparator,
+    "note": Note,
+    "note_folder": NoteFolder,
+    "note_separator": NoteSeparator,
+    "speeddial": SpeedDial,
+    "search_engine": SearchEngine,
 }
