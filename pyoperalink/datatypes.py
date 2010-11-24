@@ -249,6 +249,10 @@ class SearchEngine(LinkEntry):
     datatype = "search_engine"
     item_type = "search_engine"
 
+class UrlFilter(LinkEntry):
+    fields = ("content", "type")
+    datatype = "urlfilter"
+    item_type = "urlfilter"
 
 registry = {
     "bookmark": Bookmark,
@@ -259,4 +263,5 @@ registry = {
     "note_separator": NoteSeparator,
     "speeddial": SpeedDial,
     "search_engine": SearchEngine,
+    "urlfitler": UrlFilter,
 }
